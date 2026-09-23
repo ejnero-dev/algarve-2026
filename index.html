@@ -67,6 +67,7 @@ nav.days{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1p
 .tab[aria-selected="true"]{background:var(--cobalt);border-color:var(--cobalt);color:var(--card)}
 .tab[aria-selected="true"] small{color:inherit;opacity:.85}
 .tab .today{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ochre);margin-left:6px;vertical-align:middle}
+@media (max-width:480px){.days-inner{flex-wrap:wrap;overflow-x:visible;row-gap:6px}.tab{flex:1 1 auto;text-align:center}}
 .tools{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px 10px;font-size:14px;color:var(--muted)}
 .filter{display:flex;align-items:center;gap:8px;cursor:pointer;background:none;border:0;padding:4px 0;color:var(--ink);font-size:14px}
 .switch{width:38px;height:22px;border-radius:11px;background:var(--line);position:relative;flex:0 0 auto;transition:background .15s}
