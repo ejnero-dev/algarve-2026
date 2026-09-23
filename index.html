@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d4a93">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Algarve">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="apple-touch-icon.png">
+<title>Algarve · 24–27 sep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cobalt:#1d4a93; --cobalt-soft:#dfe8f6; --ink:#15213a; --muted:#56627a;
+  --paper:#f6f8fb; --card:#ffffff; --line:#d7deea; --ochre:#d99a22; --ochre-soft:#fbefd4;
+  --sea:#0f7c86; --warn-bg:#fff4e0; --warn-line:#e7b45a;
+  --tile-a:#1d4a93; --tile-b:#ffffff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --cobalt:#8fb3ee; --cobalt-soft:#1c2a45; --ink:#e8edf6; --muted:#a3aec3;
+    --paper:#0e1628; --card:#16213a; --line:#2a3858; --ochre:#f0b547; --ochre-soft:#3a2e14;
+    --sea:#5cc3cc; --warn-bg:#2f2614; --warn-line:#8a6a2c; --tile-a:#2d5bab; --tile-b:#0e1628;
+  }
+}
+:root[data-theme="dark"]{
+  --cobalt:#8fb3ee; --cobalt-soft:#1c2a45; --ink:#e8edf6; --muted:#a3aec3;
+  --paper:#0e1628; --card:#16213a; --line:#2a3858; --ochre:#f0b547; --ochre-soft:#3a2e14;
+  --sea:#5cc3cc; --warn-bg:#2f2614; --warn-line:#8a6a2c; --tile-a:#2d5bab; --tile-b:#0e1628;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 17px/1.5 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--cobalt)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ochre);outline-offset:2px;border-radius:6px}
+
+/* Cabecera con franja de azulejo */
+header.top{background:var(--card)}
+.tiles{height:34px;
+  background:
+    radial-gradient(circle at 50% 50%, var(--tile-b) 0 5px, transparent 5.5px),
+    conic-gradient(from 45deg at 50% 50%, var(--tile-a) 0 25%, var(--tile-b) 0 50%, var(--tile-a) 0 75%, var(--tile-b) 0) ;
+  background-size:34px 34px;
+  border-bottom:3px solid var(--tile-a)}
+.head{max-width:640px;margin:0 auto;padding:18px 18px 6px}
+h1{font:800 clamp(30px,8vw,40px)/1.02 "Bricolage Grotesque",system-ui,sans-serif;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:6px 0 0;font-size:15px}
+
+/* Barra de días, fija */
+nav.days{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top,0px)}
+.days-inner{max-width:640px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;padding:10px 14px;scrollbar-width:none}
+.days-inner::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:1.5px solid var(--line);background:transparent;border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap}
+.tab small{font-weight:400;color:var(--muted);margin-left:4px}
+.tab[aria-selected="true"]{background:var(--cobalt);border-color:var(--cobalt);color:var(--card)}
+.tab[aria-selected="true"] small{color:inherit;opacity:.85}
+.tab .today{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ochre);margin-left:6px;vertical-align:middle}
+.tools{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px 10px;font-size:14px;color:var(--muted)}
+.filter{display:flex;align-items:center;gap:8px;cursor:pointer;background:none;border:0;padding:4px 0;color:var(--ink);font-size:14px}
+.switch{width:38px;height:22px;border-radius:11px;background:var(--line);position:relative;flex:0 0 auto;transition:background .15s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--card);transition:transform .15s}
+.filter[aria-pressed="true"] .switch{background:var(--ochre)}
+.filter[aria-pressed="true"] .switch::after{transform:translateX(16px)}
+.sync{display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.sync.on .dot{background:var(--sea)}
+
+main{max-width:640px;margin:0 auto;padding:6px 14px 40px}
+.day-title{font:700 24px/1.15 "Bricolage Grotesque",system-ui,sans-serif;margin:14px 4px 4px}
+.day-lead{margin:0 4px 14px;color:var(--muted);font-size:15px}
+
+/* Línea de tiempo */
+.entry{display:grid;grid-template-columns:74px 1fr;gap:0 12px;position:relative;padding-bottom:14px}
+.entry::before{content:"";position:absolute;left:80px;top:10px;bottom:0;width:2px;background:var(--line)}
+.entry:last-child::before{display:none}
+.when{font-weight:700;font-size:14px;color:var(--cobalt);text-align:right;padding-top:9px;line-height:1.2}
+.when small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.body{padding-left:14px;position:relative;min-width:0}
+.body::before{content:"";position:absolute;left:-7px;top:12px;width:12px;height:12px;border-radius:50%;
+  background:var(--card);border:2.5px solid var(--cobalt)}
+.label{font-weight:700;margin:6px 0 6px;font-size:16px}
+.text{margin:0 0 8px;color:var(--ink)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 10px 10px 12px;
+  display:grid;grid-template-columns:1fr auto;gap:4px 8px;align-items:start}
+.opt.on{border-color:var(--ochre);background:linear-gradient(0deg,var(--ochre-soft),var(--ochre-soft)) , var(--card);box-shadow:inset 4px 0 0 var(--ochre)}
+.opt .name{font-weight:700}
+.opt .note{grid-column:1/-1;color:var(--muted);font-size:15px;margin:0}
+.opt .links{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:5px;text-decoration:none;font-size:14px;font-weight:700;
+  border:1.5px solid var(--cobalt-soft);background:var(--cobalt-soft);color:var(--cobalt);border-radius:8px;padding:5px 9px;min-height:34px}
+.chip svg{width:15px;height:15px;flex:0 0 auto}
+.mark{border:1.5px solid var(--line);background:transparent;border-radius:10px;width:44px;height:44px;
+  display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.mark svg{width:22px;height:22px}
+.mark[aria-pressed="true"]{border-color:var(--ochre);color:var(--ochre)}
+.mark[aria-pressed="true"] svg path{fill:currentColor}
+.or{font-size:13px;color:var(--muted);margin:-2px 0 -2px 12px}
+.note-box{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:12px;padding:12px 14px;margin:6px 0 16px;font-size:15px}
+.note-box b{display:block;margin-bottom:2px}
+.planb{margin-top:8px;border-top:2px dashed var(--line);padding-top:10px}
+.planb h3{font:700 19px/1.2 "Bricolage Grotesque",system-ui,sans-serif;margin:6px 4px 8px}
+
+/* Info y comer */
+.kv{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.kv div{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:10px 12px;border-top:1px solid var(--line)}
+.kv div:first-child{border-top:0}
+.kv dt{font-weight:700;color:var(--muted);font-size:14px;padding-top:2px}
+.kv dd{margin:0}
+dl{margin:0}
+.section-h{font:700 19px/1.2 "Bricolage Grotesque",system-ui,sans-serif;margin:20px 4px 8px}
+.closed{font-size:13px;font-weight:700;color:var(--sea)}
+.empty{color:var(--muted);text-align:center;padding:28px 10px}
+footer{max-width:640px;margin:0 auto;padding:0 18px 30px;color:var(--muted);font-size:13px}
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:360px){.entry{grid-template-columns:60px 1fr}.entry::before{left:66px}.kv div{grid-template-columns:90px 1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="tiles" aria-hidden="true"></div>
+  <div class="head">
+    <h1>Algarve, 24–27 sep</h1>
+    <p class="sub">Base en Olhão Escape. Horas de Portugal salvo que diga ES (España va una hora por delante).</p>
+  </div>
+</header>
+
+<nav class="days" aria-label="Días del viaje">
+  <div class="days-inner" role="tablist" id="tabs"></div>
+  <div class="tools">
+    <button class="filter" id="filter" aria-pressed="false"><span class="switch" aria-hidden="true"></span>Solo lo marcado</button>
+    <span class="sync" id="sync"><span class="dot" aria-hidden="true"></span><span id="syncText">Marcas en este móvil</span></span>
+  </div>
+</nav>
+
+<main id="main"></main>
+<footer>Horarios tomados de Google y de las webs oficiales; confirmad por teléfono lo imprescindible.</footer>
+
+<script>
+(function(){
+"use strict";
+const M = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+const T = n => "tel:" + n.replace(/\s/g,"");
+const W = n => "https://wa.me/" + n.replace(/\D/g,"");
+
+// ---------- Datos ----------
+const DAYS = [
+ { id:"jue", tab:"Jue", date:"2026-09-24", title:"Jueves 24 · ida y llegada",
+   lead:"Salida tranquila, check-in y primera tarde por Olhão.",
+   entries:[
+    { when:"10:00", whenSub:"hora ES", label:"Salida de Rota", opts:[
+      { id:"suc-jerez-ida", name:"Supercharger Jerez", note:"Solo si hace falta cargar antes de cruzar.", map:"Tesla Supercharger Jerez de la Frontera" } ]},
+    { when:"Camino", label:"Cerámica y toallas (opcional)", text:"Vila Real de Santo António / Ayamonte, justo al cruzar la frontera.", opts:[
+      { id:"louca-maria", name:"Louça da Maria", map:"Louça da Maria Vila Real de Santo António" },
+      { id:"casa-jardim", name:"Casa Jardim", map:"Casa Jardim Vila Real de Santo António" } ]},
+    { when:"15:00", label:"Check-in en Olhão Escape", text:"Coche aparcado en la calle junto al alojamiento." },
+    { when:"Tarde", label:"Paseo por Olhão", opts:[
+      { id:"cubista", name:"Casco antiguo y barrio cubista", map:"Bairro da Barreta Olhão" },
+      { id:"ria-paseo", name:"Paseo por la ría y los mercados", map:"Mercados de Olhão" } ]},
+    { when:"Atardecer", label:"Mirador", opts:[
+      { id:"cerro-sm", name:"Cerro de São Miguel", note:"Moncarapacho, ~15 min en coche. Columpio con vistas.", map:"Cerro de São Miguel Moncarapacho" } ]},
+    { when:"Cena", label:"Elegir uno", opts:[
+      { id:"ha-amador", name:"Há do Amador", note:"Marisquería. Reservar.", tel:"+351 963 270 453", map:"Há do Amador Olhão" },
+      { id:"prazeres", name:"Prazeres", note:"Tradicional, raciones grandes.", tel:"+351 289 703 656", map:"Restaurante Prazeres Olhão" },
+      { id:"tacho", name:"Tacho à Mesa", note:"Portuguesa moderna, pescado.", map:"Tacho à Mesa Olhão" },
+      { id:"galo", name:"Galo Barreta", note:"Típico y familiar, en el casco antiguo.", map:"Galo Barreta Olhão" } ]}
+   ]},
+ { id:"vie", tab:"Vie", date:"2026-09-25", title:"Viernes 25 · Ría Formosa",
+   lead:"Día de barco e islas. Llevad efectivo: en Culatra no hay cajero.",
+   entries:[
+    { when:"~8:00", label:"Mercado de Olhão", text:"Lonja y verduras. Solo por la mañana.", opts:[
+      { id:"mercado", name:"Mercados de Olhão", map:"Mercados de Olhão" } ]},
+    { when:"~10:00", label:"Barco por la Ría Formosa", text:"Sale del Cais T. Llegad 15–20 min antes.", opts:[
+      { id:"cais-t", name:"Embarcadero Cais T", note:"Av. 5 de Outubro, Olhão.", map:"Cais T Avenida 5 de Outubro Olhão" } ]},
+    { when:"Comida", label:"En Culatra (efectivo)", opts:[
+      { id:"aqua-chill", name:"Aqua Chill", note:"Pulpo, ceviche. Abre todos los días.", map:"Aqua Chill Culatra" },
+      { id:"nelia", name:"À da Nélia", note:"Sencillo, servicio lento.", map:"À da Nélia Culatra" } ]},
+    { when:"~16:00", label:"Baño flotante", opts:[
+      { id:"salinas", name:"Salinas do Grelha", note:"Tipo Mar Muerto. 10:00–18:00, cierra domingo. Cita previa; atienden en castellano. Bañador oscuro: el barro mancha.", tel:"+351 967 753 496", wa:"+351 967 753 496", map:"Salinas do Grelha Olhão" } ]},
+    { when:"Atardecer", label:"Copa", opts:[
+      { id:"oceanus", name:"Oceanus", note:"Tapas y cócteles.", map:"Oceanus Olhão" } ]},
+    { when:"Cena", label:"Elegir uno", opts:[
+      { id:"terra-mar", name:"Terra i Mar", note:"Frente a la ría, algo caro.", map:"Terra i Mar Olhão" },
+      { id:"prazeres-vie", name:"Prazeres", tel:"+351 289 703 656", map:"Restaurante Prazeres Olhão" } ]}
+   ],
+   planB:{ title:"Plan B si el mar está mal", text:"Tavira se deja para el domingo.", entries:[
+    { when:"Mañana", label:"Aves y flamencos", opts:[
+      { id:"marim", name:"Quinta de Marim", note:"A 10 min de Olhão.", map:"Quinta de Marim Olhão" } ]},
+    { when:"Tarde", label:"Elegir uno", opts:[
+      { id:"mina-sal", name:"Mina de Sal Gema de Loulé", note:"230 m bajo tierra, unas 2 h, ~25 € por adulto. Hay que reservar. Guías en PT/EN/FR. Calzado cerrado. Se puede cargar en Loulé.", tel:"+351 925 969 369", mail:"turismo@techsalt.pt", map:"Mina de Sal-Gema de Loulé" },
+      { id:"faro", name:"Faro Cidade Velha", note:"Murallas y catedral, 15 min.", map:"Arco da Vila Faro" } ]}
+   ]}},
+ { id:"sab", tab:"Sáb", date:"2026-09-26", title:"Sábado 26 · Lagos y Albufeira",
+   lead:"Lagos de día, Albufeira de noche. Conduce Emilio, sin alcohol.",
+   entries:[
+    { when:"Temprano", label:"Olhão → Lagos (1–1,5 h)", opts:[
+      { id:"suc-loule-sab", name:"Supercharger Loulé (MAR Shopping)", note:"O cargar en Lagos si hace falta.", map:"Tesla Supercharger MAR Shopping Loulé" } ]},
+    { when:"Día", label:"Lagos", opts:[
+      { id:"camilo", name:"Aparcar en Praia do Camilo", note:"Y seguir por la pasarela hasta Piedade.", map:"Praia do Camilo Lagos" },
+      { id:"piedade", name:"Ponta da Piedade", map:"Ponta da Piedade" },
+      { id:"barquito", name:"Barquito corto por Piedade", note:"Opcional, 30–45 min." },
+      { id:"lagos-casco", name:"Casco y marina de Lagos", map:"Marina de Lagos" } ]},
+    { when:"Camino", label:"Elegir uno (opcional)", opts:[
+      { id:"benagil", name:"Mirador de Benagil", note:"La cueva desde arriba, 20–30 min. Aparcamiento complicado.", map:"Algar de Benagil miradouro" },
+      { id:"ferragudo", name:"Ferragudo", note:"Pueblo pesquero, muelle y calles, 30–45 min.", map:"Ferragudo" } ]},
+    { when:"Atardecer", label:"Copa (opcional)", opts:[
+      { id:"skybar", name:"Sky Bar Carvoeiro (Tivoli)", map:"Tivoli Carvoeiro Algarve Resort" },
+      { id:"boneca", name:"Boneca Bar", map:"Boneca Bar Carvoeiro" } ]},
+    { when:"Cena", label:"Albufeira", opts:[
+      { id:"albu-old", name:"Old Town o cerca del Strip", map:"Albufeira Old Town" } ]},
+    { when:"Noche", label:"The Strip / Oura", text:"Vuelta a Olhão en coche, 50–60 min.", opts:[
+      { id:"strip", name:"The Strip", map:"Avenida Sá Carneiro Albufeira" } ]},
+    { when:"Vuelta", label:"Cargar si va justo", text:"Así el domingo salís cargados hacia el este.", opts:[
+      { id:"suc-loule-noche", name:"Supercharger Loulé (MAR Shopping)", map:"Tesla Supercharger MAR Shopping Loulé" } ]}
+   ]},
+ { id:"dom", tab:"Dom", date:"2026-09-27", title:"Domingo 27 · Tavira y vuelta",
+   lead:"Todo queda de camino a casa.",
+   warn:"El domingo cierran muchos sitios (Há do Amador, Terra i Mar, Ti Maria, Casa da Igreja) y no está confirmado que abra el mercado de Olhão.",
+   entries:[
+    { when:"Desayuno", label:"Brunch", opts:[
+      { id:"esquina", name:"Esquina da Baixa", note:"Centro de Olhão.", map:"Esquina da Baixa Olhão" } ]},
+    { when:"11:00", label:"Checkout" },
+    { when:"Mañana", label:"Tavira y alrededores", opts:[
+      { id:"tavira", name:"Tavira", note:"Puente romano, Praça da República, castillo.", map:"Ponte Romana Tavira" },
+      { id:"cacela", name:"Cacela Velha", map:"Cacela Velha" },
+      { id:"barril", name:"Praia do Barril", note:"Cementerio de anclas, junto a Tavira. Opcional.", map:"Cemitério das Âncoras Praia do Barril" } ]},
+    { when:"Comida", label:"En Tavira", opts:[
+      { id:"paula", name:"Tasquinha da Paula", note:"Casera. Solo mediodía y solo efectivo.", map:"Tasquinha da Paula Tavira" },
+      { id:"fialhos", name:"Os Fialhos", note:"Arroz de lingueirão. Confirmar que abre el domingo.", map:"Os Fialhos Tavira" } ]},
+    { when:"Tarde", label:"Tavira → Rota", opts:[
+      { id:"suc-jerez-vuelta", name:"Supercharger Jerez", note:"Si hace falta.", map:"Tesla Supercharger Jerez de la Frontera" } ]}
+   ]}
+];
+
+const FOOD = [
+  { id:"ha-amador", name:"Há do Amador", zone:"Olhão", closed:"Cierra dom y lun", note:"Marisquería. Reservar.", tel:"+351 963 270 453", map:"Há do Amador Olhão" },
+  { id:"prazeres", name:"Prazeres", zone:"Olhão", closed:"Cierra lun", note:"Tradicional.", tel:"+351 289 703 656", map:"Restaurante Prazeres Olhão" },
+  { id:"terra-mar", name:"Terra i Mar", zone:"Olhão", closed:"Cierra dom", note:"Pescado frente a la ría, algo caro.", map:"Terra i Mar Olhão" },
+  { id:"tacho", name:"Tacho à Mesa", zone:"Olhão", closed:"Horario por confirmar", note:"Portuguesa moderna, pescado.", map:"Tacho à Mesa Olhão" },
+  { id:"galo", name:"Galo Barreta", zone:"Olhão", closed:"Horario por confirmar", note:"Típico, familiar.", map:"Galo Barreta Olhão" },
+  { id:"oceanus", name:"Oceanus", zone:"Olhão", closed:"Horario por confirmar", note:"Tapas y cócteles al atardecer.", map:"Oceanus Olhão" },
+  { id:"esquina", name:"Esquina da Baixa", zone:"Olhão", closed:"Horario por confirmar", note:"Brunch.", map:"Esquina da Baixa Olhão" },
+  { id:"tilio", name:"Café Tílio", zone:"Quelfes", closed:"Horario por confirmar", note:"Producto local, en coche. Decid «Family Ribeiro»: −10 %.", map:"Café Tílio Quelfes" },
+  { id:"aqua-chill", name:"Aqua Chill", zone:"Culatra", closed:"Todos los días", note:"Pulpo, ceviche. Efectivo.", map:"Aqua Chill Culatra" },
+  { id:"nelia", name:"À da Nélia", zone:"Culatra", closed:"Cierra lun", note:"Sencillo, servicio lento.", map:"À da Nélia Culatra" },
+  { id:"paula", name:"Tasquinha da Paula", zone:"Tavira", closed:"Cierra mar", note:"Casera, solo mediodía, efectivo.", map:"Tasquinha da Paula Tavira" },
+  { id:"fialhos", name:"Os Fialhos", zone:"Tavira", closed:"Horario por confirmar", note:"Arroz de lingueirão. Reservar o llegar pronto.", map:"Os Fialhos Tavira" }
+];
+
+const INFO = [
+  ["Salida","Jueves 24, hacia las 10:00 hora española, desde Rota."],
+  ["Alojamiento","Olhão Escape (Airbnb). Check-in jueves 15:00, checkout domingo 11:00."],
+  ["Coche","Tesla Model 3, aparcado en la calle junto al alojamiento."],
+  ["Carga","Supercharger Loulé (MAR Shopping) cuando haga falta. Jerez como reserva a la ida y a la vuelta."],
+  ["Peajes","A22 sin peajes."],
+  ["Hora","Portugal va una hora por detrás de España."]
+];
+const CHECK = [
+  { id:"chk-dni", name:"DNI de los dos, carné y documentación del coche" },
+  { id:"chk-efectivo", name:"Efectivo para Culatra y Tasquinha da Paula" },
+  { id:"chk-banador", name:"Bañador oscuro para las salinas" },
+  { id:"chk-tesla", name:"Planificador de Tesla la víspera de cada trayecto largo" }
+];
+
+// ---------- Iconos ----------
+const I = {
+  pin:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.3" fill="currentColor"/></svg>',
+  tel:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
+  wa:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/></svg>',
+  mail:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M3.5 6.5 12 13l8.5-6.5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+  star:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9l-5.2 2.8 1-5.9-4.3-4.1 5.9-.8z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+};
+
+// ---------- Estado: marcas ----------
+const LS_KEY = "algarve-2026-marcas";
+let marks = {};
+try { marks = JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; } catch(e){ marks = {}; }
+function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(marks)); } catch(e){} }
+let shared = null; // colección compartida si el visor la ofrece
+
+async function toggle(id){
+  const on = !marks[id];
+  marks[id] = on; if(!on) delete marks[id];
+  saveLocal(); paintMarks();
+  if(shared){
+    try { await shared.doc(id).set({ on }); }
+    catch(e){ setSync(false); }
+  }
+}
+
+// ---------- Render ----------
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function links(o){
+  let h = "";
+  if(o.map) h += `<a class="chip" href="${M(o.map)}" target="_blank" rel="noopener">${I.pin}Mapa</a>`;
+  if(o.tel) h += `<a class="chip" href="${T(o.tel)}">${I.tel}${esc(o.tel)}</a>`;
+  if(o.wa) h += `<a class="chip" href="${W(o.wa)}" target="_blank" rel="noopener">${I.wa}WhatsApp</a>`;
+  if(o.mail) h += `<a class="chip" href="mailto:${esc(o.mail)}">${I.mail}Email</a>`;
+  return h ? `<div class="links">${h}</div>` : "";
+}
+function optHTML(o, kind){
+  const icon = kind === "check" ? I.check : I.star;
+  const lab = kind === "check" ? "Hecho" : "Nos interesa";
+  return `<div class="opt" data-id="${o.id}">
+    <div><div class="name">${esc(o.name)}</div>${o.zone?`<span class="closed">${esc(o.zone)} · ${esc(o.closed)}</span>`:""}</div>
+    <button class="mark" data-mark="${o.id}" aria-pressed="false" aria-label="${lab}: ${esc(o.name)}">${icon}</button>
+    ${o.note?`<p class="note">${esc(o.note)}</p>`:""}
+    ${links(o)}
+  </div>`;
+}
+function entriesHTML(list){
+  return list.map(e => `<div class="entry">
+    <div class="when">${esc(e.when)}${e.whenSub?`<small>${esc(e.whenSub)}</small>`:""}</div>
+    <div class="body">
+      <div class="label">${esc(e.label)}</div>
+      ${e.text?`<p class="text">${esc(e.text)}</p>`:""}
+      ${e.opts?`<div class="opts">${e.opts.map(o=>optHTML(o)).join("")}</div>`:""}
+    </div></div>`).join("");
+}
+const main = document.getElementById("main");
+const tabsEl = document.getElementById("tabs");
+const TABS = [...DAYS.map(d=>({id:d.id, tab:d.tab, date:d.date})), {id:"comer", tab:"Comer"}, {id:"info", tab:"Info"}];
+
+function todayId(){
+  const d = new Date(); const iso = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  const hit = DAYS.find(x => x.date === iso);
+  return hit ? hit.id : null;
+}
+const TODAY = todayId();
+tabsEl.innerHTML = TABS.map(t => `<button class="tab" role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" aria-selected="false" data-tab="${t.id}">${t.tab}${t.date?`<small>${Number(t.date.slice(8))}</small>`:""}${t.id===TODAY?'<span class="today" title="Hoy"></span>':""}</button>`).join("");
+
+let html = "";
+DAYS.forEach(d => {
+  html += `<section class="panel" id="panel-${d.id}" role="tabpanel" aria-labelledby="tab-${d.id}">
+    <h2 class="day-title">${esc(d.title)}</h2><p class="day-lead">${esc(d.lead)}</p>
+    ${d.warn?`<div class="note-box"><b>Ojo con el domingo</b>${esc(d.warn)}</div>`:""}
+    ${entriesHTML(d.entries)}
+    ${d.planB?`<div class="planb"><h3>${esc(d.planB.title)}</h3><p class="day-lead">${esc(d.planB.text)}</p>${entriesHTML(d.planB.entries)}</div>`:""}
+    <p class="empty hidden">Nada marcado este día todavía.</p>
+  </section>`;
+});
+html += `<section class="panel" id="panel-comer" role="tabpanel" aria-labelledby="tab-comer">
+  <h2 class="day-title">Dónde comer</h2><p class="day-lead">Marcad los que os apetezcan; la marca es la misma que en el día.</p>
+  <div class="opts">${FOOD.map(o=>optHTML(o)).join("")}</div>
+  <p class="empty hidden">Nada marcado todavía.</p>
+</section>`;
+html += `<section class="panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info">
+  <h2 class="day-title">Datos clave</h2>
+  <dl class="kv">${INFO.map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+  <h3 class="section-h">Antes de salir</h3>
+  <div class="opts">${CHECK.map(o=>optHTML(o,"check")).join("")}</div>
+</section>`;
+main.innerHTML = html;
+
+let current = null, onlyMarked = false;
+function show(id){
+  current = id;
+  document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab===id)));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("hidden", p.id !== "panel-"+id));
+  const b = document.getElementById("tab-"+id); if(b) b.scrollIntoView({block:"nearest", inline:"center"});
+  try { sessionStorage.setItem("algarve-tab", id); } catch(e){}
+  applyFilter();
+}
+function paintMarks(){
+  document.querySelectorAll("[data-mark]").forEach(b => {
+    const on = !!marks[b.dataset.mark];
+    b.setAttribute("aria-pressed", String(on));
+    b.closest(".opt").classList.toggle("on", on);
+  });
+  applyFilter();
+}
+function applyFilter(){
+  const panel = document.getElementById("panel-"+current); if(!panel) return;
+  const filterable = current !== "info";
+  panel.querySelectorAll(".opt").forEach(o => o.classList.toggle("hidden", onlyMarked && filterable && !marks[o.dataset.id]));
+  panel.querySelectorAll(".entry").forEach(e => {
+    const opts = e.querySelectorAll(".opt");
+    const hide = onlyMarked && filterable && (opts.length === 0 || [...opts].every(o => o.classList.contains("hidden")));
+    e.classList.toggle("hidden", hide);
+  });
+  const pb = panel.querySelector(".planb");
+  if(pb) pb.classList.toggle("hidden", onlyMarked && [...pb.querySelectorAll(".entry")].every(e=>e.classList.contains("hidden")));
+  const empty = panel.querySelector(".empty");
+  if(empty) empty.classList.toggle("hidden", !(onlyMarked && filterable && ![...panel.querySelectorAll(".opt")].some(o=>!o.classList.contains("hidden"))));
+}
+
+tabsEl.addEventListener("click", e => { const b = e.target.closest(".tab"); if(b) show(b.dataset.tab); });
+tabsEl.addEventListener("keydown", e => {
+  if(!["ArrowRight","ArrowLeft"].includes(e.key)) return;
+  const i = TABS.findIndex(t=>t.id===current); const n = TABS[(i + (e.key==="ArrowRight"?1:-1) + TABS.length) % TABS.length];
+  show(n.id); document.getElementById("tab-"+n.id).focus();
+});
+main.addEventListener("click", e => { const b = e.target.closest("[data-mark]"); if(b) toggle(b.dataset.mark); });
+const fBtn = document.getElementById("filter");
+fBtn.addEventListener("click", () => { onlyMarked = !onlyMarked; fBtn.setAttribute("aria-pressed", String(onlyMarked)); applyFilter(); });
+
+let start = TODAY || "jue";
+try { start = sessionStorage.getItem("algarve-tab") || start; } catch(e){}
+show(TABS.some(t=>t.id===start) ? start : "jue");
+paintMarks();
+
+// ---------- Sincronización compartida (solo dentro de claude.ai) ----------
+function setSync(on){
+  document.getElementById("sync").classList.toggle("on", on);
+  document.getElementById("syncText").textContent = on ? "Marcas compartidas" : "Marcas en este móvil";
+}
+(async function(){
+  if(!window.claude || typeof window.claude.use !== "function") return;
+  let db = null;
+  try { db = await window.claude.use("db"); } catch(e){ db = null; }
+  if(!db) return;
+  const col = db.collection("marcas");
+  let first = true;
+  col.onSnapshot(snap => {
+    const remote = {};
+    snap.docs.forEach(d => { const v = d.data(); if(v && v.on) remote[d.id] = true; });
+    if(snap.metadata && snap.metadata.fromCache) { marks = Object.assign({}, marks, remote); paintMarks(); return; }
+    if(first){
+      first = false;
+      // Subir marcas locales que el servidor aún no tenga
+      Object.keys(marks).forEach(id => { if(!remote[id]) { remote[id] = true; col.doc(id).set({on:true}).catch(()=>{}); } });
+    }
+    marks = remote; saveLocal(); paintMarks();
+    shared = col; setSync(true);
+  }, () => { shared = null; setSync(false); });
+})();
+})();
+</script>
+</body>
+</html>
