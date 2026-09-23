@@ -179,13 +179,13 @@ const DAYS = [
       { id:"galo", name:"Galo Barreta", note:"Típico y familiar. El jueves solo cena, desde las 18:30. Solo efectivo. Pierden reservas: confirmad el mismo día.", tel:"+351 912 972 858", map:"Galo Barreta Olhão" } ]}
    ]},
  { id:"vie", tab:"Vie", date:"2026-09-25", title:"Viernes 25 · Ría Formosa",
-   lead:"Día de barco e islas. Llevad efectivo: en Culatra no hay cajero.",
+   lead:"Tour de 3 islas reservado. Llevad efectivo: en Culatra no hay cajero.",
    entries:[
     { when:"~8:00", label:"Mercado de Olhão", text:"Lonja y verduras. Solo por la mañana.", opts:[
       { id:"mercado", name:"Mercados de Olhão", map:"Mercados de Olhão" } ]},
-    { when:"~10:00", label:"Barco por la Ría Formosa", text:"Sale del Cais T. Llegad 15–20 min antes.", opts:[
-      { id:"cais-t", name:"Embarcadero Cais T", note:"Av. 5 de Outubro, Olhão.", map:"Cais T Avenida 5 de Outubro Olhão" } ]},
-    { when:"Comida", label:"En Culatra (efectivo)", opts:[
+    { when:"10:00", whenSub:"estar 9:45", label:"Tour 3 islas (reservado)", text:"GetYourGuide / Odyssey, grupo pequeño, ~5 h: Farol, Culatra (~2 h, se come allí) y Armona o Praia Deserta según el tiempo. 81 € los dos (código 10 %). Voucher en la app de GetYourGuide: haced captura por si no hay cobertura. Cancelación gratis hasta el jueves 24. Llevad bañador, toalla, crema, gorra, calzado que se pueda mojar, agua y powerbank.", opts:[
+      { id:"cais-t", name:"Embarcadero Cais T", note:"Av. 5 de Outubro s/n, Olhão. Estad a las 9:45.", map:"Cais T Avenida 5 de Outubro Olhão" } ]},
+    { when:"Comida", label:"En Culatra (parada del tour, efectivo)", opts:[
       { id:"aqua-chill", name:"Aqua Chill", note:"Pulpo, ceviche. Todos los días, 9:00–23:00.", tel:"+351 961 463 342", map:"Aqua Chill Culatra" },
       { id:"nelia", name:"À da Nélia", note:"Sencillo, servicio lento.", tel:"+351 962 659 868", map:"À da Nélia Culatra" } ]},
     { when:"~16:00", label:"Baño flotante", opts:[
@@ -197,7 +197,7 @@ const DAYS = [
       { id:"terra-mar", name:"Terra i Mar", note:"Frente a la ría, algo caro. Reserva en TheFork.", tel:"+351 915 521 931", web:"https://www.thefork.pt/restaurante/terra-i-mar-r813065", map:"Terra i Mar Olhão" },
       { id:"prazeres-vie", name:"Prazeres", tel:"+351 289 703 656", web:"https://restauranteprazeres.pt/", map:"Restaurante Prazeres Olhão" } ]}
    ],
-   planB:{ title:"Plan B si el mar está mal", text:"Tavira se deja para el domingo.", entries:[
+   planB:{ title:"Plan B si se cancela el barco", text:"Solo si el tour se cancela por mal tiempo (poco probable). Tavira se queda para el domingo.", entries:[
     { when:"Mañana", label:"Aves y flamencos", opts:[
       { id:"marim", name:"Quinta de Marim", note:"A 10 min de Olhão.", map:"Quinta de Marim Olhão" } ]},
     { when:"Tarde", label:"Elegir uno", opts:[
@@ -227,21 +227,22 @@ const DAYS = [
     { when:"Vuelta", label:"Cargar si va justo", text:"Así el domingo salís cargados hacia el este.", opts:[
       { id:"suc-loule-noche", name:"Supercharger Loulé (MAR Shopping)", map:"Tesla Supercharger MAR Shopping Loulé" } ]}
    ]},
- { id:"dom", tab:"Dom", date:"2026-09-27", title:"Domingo 27 · Tavira y vuelta",
-   lead:"Todo queda de camino a casa.",
+ { id:"dom", tab:"Dom", date:"2026-09-27", title:"Domingo 27 · Este y vuelta a Rota",
+   lead:"Hacia el este, de camino a casa. Nada de Faro ni de islas: eso ya es el viernes.",
    warn:"El domingo cierran muchos sitios (Há do Amador, Terra i Mar, Ti Maria, Casa da Igreja) y no está confirmado que abra el mercado de Olhão.",
    entries:[
     { when:"Desayuno", label:"Brunch", opts:[
       { id:"esquina", name:"Esquina da Baixa", note:"Centro de Olhão. Todos los días, 9:00–18:00.", tel:"+351 912 774 847", web:"https://linktr.ee/esquinadabaixa", map:"Esquina da Baixa Olhão" } ]},
     { when:"11:00", label:"Checkout" },
-    { when:"Mañana", label:"Tavira y alrededores", opts:[
-      { id:"tavira", name:"Tavira", note:"Puente romano, Praça da República, castillo.", map:"Ponte Romana Tavira" },
-      { id:"cacela", name:"Cacela Velha", map:"Cacela Velha" },
+    { when:"Mañana", label:"Tavira", opts:[
+      { id:"tavira", name:"Tavira", note:"Casco antiguo, puente romano, Praça da República, castillo.", map:"Ponte Romana Tavira" } ]},
+    { when:"Comida", label:"Elegir uno", opts:[
+      { id:"paula", name:"Tasquinha da Paula", note:"Casera. Solo efectivo. Según Google el domingo abre de 11:00 a 17:00, pero su web dice que cierra: llamad antes y, si no, Os Fialhos.", tel:"+351 281 109 152", map:"Tasquinha da Paula Tavira" },
+      { id:"fialhos", name:"Os Fialhos", note:"Arroz de lingueirão. En Luz de Tavira, ~7 km del centro. Llegad antes de las 14:30, que cierra la cocina. Pedid el arroz al reservar. Llevad efectivo por si acaso.", tel:"+351 281 961 222", map:"Os Fialhos Luz de Tavira" } ]},
+    { when:"Tarde corta", label:"Cacela Velha", text:"Sin forzar Barril si vais justos.", opts:[
+      { id:"cacela", name:"Cacela Velha", note:"Mirador y playa, según la marea.", map:"Cacela Velha" },
       { id:"barril", name:"Praia do Barril", note:"Cementerio de anclas, junto a Tavira. Opcional.", map:"Cemitério das Âncoras Praia do Barril" } ]},
-    { when:"Comida", label:"En Tavira", opts:[
-      { id:"paula", name:"Tasquinha da Paula", note:"Casera. Solo mediodía y solo efectivo. Google dice que el domingo abre (11:00–17:00) pero su web dice que cierra: llamad antes y, si no, Os Fialhos.", tel:"+351 281 109 152", map:"Tasquinha da Paula Tavira" },
-      { id:"fialhos", name:"Os Fialhos", note:"Arroz de lingueirão. El domingo abre; la cocina cierra a las 14:30. Está en Luz de Tavira, ~7 km del centro. Pedid el arroz al reservar. Llevad efectivo.", tel:"+351 281 961 222", map:"Os Fialhos Luz de Tavira" } ]},
-    { when:"Tarde", label:"Tavira → Rota", opts:[
+    { when:"Después", label:"Hacia Ayamonte y Rota", opts:[
       { id:"suc-jerez-vuelta", name:"Supercharger Jerez", note:"Si hace falta.", map:"Tesla Supercharger Jerez de la Frontera" } ]}
    ]}
 ];
@@ -275,6 +276,7 @@ const INFO = [
 const CHECK = [
   { id:"chk-dni", name:"DNI de los dos, carné y documentación del coche" },
   { id:"chk-efectivo", name:"Efectivo para Culatra y Tasquinha da Paula" },
+  { id:"chk-voucher", name:"Captura del voucher del tour (app GetYourGuide)" },
   { id:"chk-banador", name:"Bañador oscuro para las salinas" },
   { id:"chk-tesla", name:"Planificador de Tesla la víspera de cada trayecto largo" }
 ];
